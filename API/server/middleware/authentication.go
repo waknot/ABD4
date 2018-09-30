@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Sunday, 30th September 2018 2:37:45 pm
+ * Last Modified: Monday, 1st October 2018 1:10:40 am
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -29,7 +29,7 @@ import (
 // Authenticate is a middleware to apply to all roads
 // It's supposed to receive a boolean defining if the road
 // need to be protected by authentication or not
-// If the road need to be protected, the request must contain a 'Auth' cookie
+// If the road need to be protected, the request must contain a 'Basic [token]' authorization header
 func Authenticate(ctx *context.AppContext, handler *context.HandlerWrapper, protected bool) *context.HandlerWrapper {
 	return &context.HandlerWrapper{
 		Ctx: ctx,
