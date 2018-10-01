@@ -33,8 +33,6 @@ go get github.com/boltdb/bolt/...
 go build ABD4/API
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Running the tests
 
 In GOPATH/src/ABD4/API
@@ -51,9 +49,9 @@ The process will log server behaviour under /test folder. The abd4.log file is c
 
 Expected console output:
 
+![good_output](https://user-images.githubusercontent.com/16307418/46264432-11e8e800-c51d-11e8-8c8f-758280c16fc3.png)
 
-
-### And coding style tests
+### Test workflow
 
 Tests are functionnal and are testing API endpoints.
 For each road, we send mocked data and compare API's return with a preprared expected state.
@@ -107,7 +105,7 @@ main_test.go::TestUser
 
 ## Deployment
 
-On a live system, the recommended way to deploy this API is a docker context.
+On a live system, the recommended way to deploy this API in a docker context. to follow...
 
 ## Built With
 
