@@ -30,7 +30,40 @@ go get github.com/gorilla/mux
 go get github.com/dgrijalva/jwt-go
 go get github.com/stretchr/testify/assert
 go get github.com/boltdb/bolt/...
+go get gopkg.in/olivere/elastic.v5
 go build ABD4/API
+```
+
+## Running du docker contenant elasticsearch 5.5.3
+```
+    cd docker-es
+    - launch the docker:
+        docker-compose up
+    - kill the docker:
+        docker-compose down [--remove-orphans, kill all instances if changes has been done in docker-compose.yml]
+```
+
+Warning: if you want to run a `local` docker set or `unset the sniffing option` of elastic library.
+```
+docker-compose.yml ->
+    services:
+        my_service:
+            environment:
+                http.publish_host=127.0.0.1
+                ...
+            ...
+        ...
+    ...
+```
+
+## Commandes Es pour voir les infos
+```
+    - voir les différents nodes (normalement 2):
+        curl http://127.0.0.1:9200/_nodes/http?pretty=1
+    - voir le cluster:
+        curl http://127.0.0.1:9200/
+    - voir le cluster health:
+        curl http://127.0.0.1:9200/_cluster/health
 ```
 
 ## Running the tests

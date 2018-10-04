@@ -56,9 +56,10 @@ func (r *Road) appendTo(ctx *context.AppContext, preparedHandler *context.Handle
 func GetRoadKit() map[string]RoadGetter {
 	return map[string]RoadGetter{
 		// exemple for localhost:8000/user/* set of road:
-		"/user":   getUserRouting,
-		"/auth":   getAuthRouting,
-		"/backup": getBackupRouting,
+		"/user":    getUserRouting,
+		"/auth":    getAuthRouting,
+		"/backup":  getBackupRouting,
+		"/elastic": getElasticRouting,
 	}
 }
 
@@ -114,7 +115,7 @@ func getAuthRouting() []*Road {
 		{
 			Name:            "/auth/register",
 			Method:          POST,
-			Pattern:         "register",
+			Pattern:         "/register",
 			StatusProtected: false,
 			HandlerFunc:     handler.Register,
 		},
@@ -129,6 +130,18 @@ func getBackupRouting() []*Road {
 			Pattern:         "/",
 			StatusProtected: false,
 			HandlerFunc:     handler.BackupBoltDatabase,
+		},
+	}
+}
+
+func getElasticRouting() []*Road {
+	return []*Road{
+		{
+			Name:            "/elastic",
+			Method:          GET,
+			Pattern:         "/",
+			StatusProtected: false,
+			HandlerFunc:     handler.GetElasticHealth,
 		},
 	}
 }

@@ -15,6 +15,7 @@ package context
 
 import (
 	"ABD4/API/database/manager"
+	"ABD4/API/elasticsearch"
 	"ABD4/API/iserial"
 	"ABD4/API/logger"
 	"ABD4/API/utils"
@@ -23,6 +24,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+
+	elastic "gopkg.in/olivere/elastic.v5"
 )
 
 var (
@@ -70,14 +73,15 @@ type ISessionUser interface {
 // It embed the dao's objects (XxxManager *manager.XxxManager),
 // a ResponseWriter which offer shorthand to send uniformised Response
 type AppContext struct {
-	Rw          IResponseWriter
-	SessionUser ISessionUser
-	Opts        IServerOption
-	UserManager *manager.UserManager
-	Log         *logger.AppLogger
-	Exe         string
-	Logpath     string
-	DataPath    string
+	Rw            IResponseWriter
+	SessionUser   ISessionUser
+	Opts          IServerOption
+	UserManager   *manager.UserManager
+	Log           *logger.AppLogger
+	Exe           string
+	Logpath       string
+	DataPath      string
+	ElasticClient *elastic.Client
 }
 
 // Instanciate the global ctx variable
@@ -143,6 +147,10 @@ func (ctx *AppContext) Instanciate(opts IServerOption) *AppContext {
 	ctx.Exe = opts.GetExeFolder()
 	ctx.Logpath = opts.GetLogpath()
 	ctx.DataPath = opts.GetDatapath()
+	ctx.ElasticClient, err = elasticsearch.Instanciate()
+	if err != nil {
+		loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
+	}
 	ctx.Log.Info.Printf("%s RootDir: %s", utils.Use().GetStack(ctx.Instanciate), ctx.Exe)
 	ctx.Log.Info.Printf("%s LogPath: %s", utils.Use().GetStack(ctx.Instanciate), ctx.Logpath)
 	ctx.Log.Info.Printf("%s Datapath: %s", utils.Use().GetStack(ctx.Instanciate), ctx.DataPath)
