@@ -22,6 +22,8 @@ type Option struct {
 	address  string
 	port     string
 	ip       string
+	index    bool
+	reindex  bool
 }
 
 var (
@@ -30,7 +32,8 @@ var (
 	TEST = "test"
 )
 
-func (o *Option) Hydrate(port, ip, env, dir, logpath, datapath string, debug bool) {
+// Hydrate set datas for Option struc
+func (o *Option) Hydrate(port, ip, env, dir, logpath, datapath string, debug bool, index bool, reindex bool) {
 	o.port = port
 	o.ip = ip
 	o.datapath = datapath
@@ -38,6 +41,8 @@ func (o *Option) Hydrate(port, ip, env, dir, logpath, datapath string, debug boo
 	o.env = env
 	o.debug = debug
 	o.exe = dir
+	o.index = index
+	o.reindex = reindex
 }
 
 // GetAddress concat ip and port and affect to address if needed
@@ -94,6 +99,16 @@ func (o *Option) GetEnv() string {
 		return DEV
 	}
 	return o.env
+}
+
+// GetIndex return if indexation is needed default false
+func (o *Option) GetIndex() bool {
+	return o.index
+}
+
+// GetReIndex return if reindexation is needed default false
+func (o *Option) GetReindex() bool {
+	return o.reindex
 }
 
 // SetEnv allow a IServerOption to change the environnement

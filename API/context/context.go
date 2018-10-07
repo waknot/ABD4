@@ -53,6 +53,8 @@ type IServerOption interface {
 	GetAddress() string
 	GetPort() string
 	GetIP() string
+	GetIndex() bool
+	GetReindex() bool
 }
 
 // IResponseWriter interface define the required methods to
@@ -151,6 +153,16 @@ func (ctx *AppContext) Instanciate(opts IServerOption) *AppContext {
 	if err != nil {
 		loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
 	}
+
+	// When Es client is up, check if we need to reindex
+	if opts.GetIndex() || opts.GetReindex() {
+		err = elasticsearch.ReIndex(ctx.ElasticClient, opts.GetReindex())
+	}
+
+	if err != nil {
+		loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
+	}
+
 	ctx.Log.Info.Printf("%s RootDir: %s", utils.Use().GetStack(ctx.Instanciate), ctx.Exe)
 	ctx.Log.Info.Printf("%s LogPath: %s", utils.Use().GetStack(ctx.Instanciate), ctx.Logpath)
 	ctx.Log.Info.Printf("%s Datapath: %s", utils.Use().GetStack(ctx.Instanciate), ctx.DataPath)

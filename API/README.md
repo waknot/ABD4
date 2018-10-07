@@ -37,6 +37,7 @@ go build ABD4/API
 ## Running du docker contenant elasticsearch 5.5.3
 ```
     cd docker-es
+    - if not exists, create dir `data` and `data2`
     - launch the docker:
         docker-compose up
     - kill the docker:

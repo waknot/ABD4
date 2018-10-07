@@ -37,6 +37,8 @@ func main() {
 	var env = flag.String("env", "dev", "define environnement context, [prod|dev|test]")
 	var port = flag.Int("p", 8000, "define port")
 	var debug = flag.Bool("d", false, "active debug logging")
+	var index = flag.Bool("index", false, "indexation for ES")
+	var reindex = flag.Bool("reindex", false, "indexation with mapping reloading")
 	var logpath = flag.String("logpath", "", "define log folder path from exe folder")
 	var datapath = flag.String("datapath", "", "define data folder path from exe folder")
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
@@ -46,6 +48,6 @@ func main() {
 	}
 	portStr := strconv.Itoa(*port)
 	opts := &server.Option{}
-	opts.Hydrate(portStr, *ip, *env, dir, *logpath, *datapath, *debug)
+	opts.Hydrate(portStr, *ip, *env, dir, *logpath, *datapath, *debug, *index, *reindex)
 	launchApp(opts)
 }
