@@ -15,8 +15,10 @@ package utils
 
 import (
 	"math/rand"
+	"path"
 	"reflect"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -56,4 +58,9 @@ func (u *Utils) RandStringRunes(n int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
+}
+
+//NoFileExtension trim ext from file
+func NoFileExtension(fn string) string {
+	return strings.TrimSuffix(fn, path.Ext(fn))
 }

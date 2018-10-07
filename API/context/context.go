@@ -156,12 +156,12 @@ func (ctx *AppContext) Instanciate(opts IServerOption) *AppContext {
 
 	// When Es client is up, check if we need to reindex
 	if opts.GetIndex() && false == opts.GetReindex() {
-		err = elasticsearch.Index(ctx.ElasticClient)
+		err = elasticsearch.IndexAll(ctx.ElasticClient, false)
 		if err != nil {
 			loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
 		}
 	} else if opts.GetReindex() {
-		err = elasticsearch.ReIndex(ctx.ElasticClient)
+		err = elasticsearch.IndexAll(ctx.ElasticClient, true)
 		if err != nil {
 			loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
 		}
