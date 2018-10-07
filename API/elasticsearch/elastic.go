@@ -43,7 +43,7 @@ func Index(es *elastic.Client) error {
 
 // ReIndex delete and create index
 // TODO: Quand on aura toutes les db il faudra faire en sorte qu'elle get tous les mappings :)
-func ReIndex(es *elastic.Client, reindex bool) error {
+func ReIndex(es *elastic.Client) error {
 	var index = "users"
 	exists, err := es.IndexExists(index).Do(context.Background())
 	if err != nil {
