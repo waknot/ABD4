@@ -45,6 +45,7 @@ var (
 type IServerOption interface {
 	GetExeFolder() string
 	SetEnv(string)
+	GetEs() string
 	SetLogpath(string)
 	SetDatapath(string)
 	GetEnv() string
@@ -149,7 +150,10 @@ func (ctx *AppContext) Instanciate(opts IServerOption) *AppContext {
 	ctx.Exe = opts.GetExeFolder()
 	ctx.Logpath = opts.GetLogpath()
 	ctx.DataPath = opts.GetDatapath()
-	ctx.ElasticClient, err = elasticsearch.Instanciate()
+
+	//Define elastic serv and index if needed
+	esServ := opts.GetEs()
+	ctx.ElasticClient, err = elasticsearch.Instanciate(esServ)
 	if err != nil {
 		loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
 	}

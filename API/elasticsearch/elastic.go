@@ -10,8 +10,8 @@ import (
 )
 
 // Instanciate elasticsearch client for context
-func Instanciate() (*elastic.Client, error) {
-	client, err := elastic.NewClient(elastic.SetURL("http://127.0.0.1:9200"))
+func Instanciate(serv string) (*elastic.Client, error) {
+	client, err := elastic.NewClient(elastic.SetURL("http://" + serv + ":9200"))
 	if err != nil {
 		msg := fmt.Errorf("%s elastic client Init failed: %s", utils.Use().GetStack(Instanciate), err.Error())
 		return client, msg

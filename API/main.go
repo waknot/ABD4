@@ -35,6 +35,7 @@ func launchApp(opts *server.Option) {
 func main() {
 	var ip = flag.String("ip", "0.0.0.0", "define ip address")
 	var env = flag.String("env", "dev", "define environnement context, [prod|dev|test]")
+	var es = flag.String("es", "127.0.0.1", "define the es server")
 	var port = flag.Int("p", 8000, "define port")
 	var debug = flag.Bool("d", false, "active debug logging")
 	var index = flag.Bool("index", false, "indexation for ES")
@@ -48,6 +49,6 @@ func main() {
 	}
 	portStr := strconv.Itoa(*port)
 	opts := &server.Option{}
-	opts.Hydrate(portStr, *ip, *env, dir, *logpath, *datapath, *debug, *index, *reindex)
+	opts.Hydrate(portStr, *ip, *env, *es, dir, *logpath, *datapath, *debug, *index, *reindex)
 	launchApp(opts)
 }

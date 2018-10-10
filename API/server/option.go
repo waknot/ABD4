@@ -16,6 +16,7 @@ package server
 type Option struct {
 	exe      string
 	env      string
+	es       string
 	debug    bool
 	logpath  string
 	datapath string
@@ -33,12 +34,13 @@ var (
 )
 
 // Hydrate set datas for Option struc
-func (o *Option) Hydrate(port, ip, env, dir, logpath, datapath string, debug bool, index bool, reindex bool) {
+func (o *Option) Hydrate(port, ip, env, es, dir, logpath, datapath string, debug bool, index bool, reindex bool) {
 	o.port = port
 	o.ip = ip
 	o.datapath = datapath
 	o.logpath = logpath
 	o.env = env
+	o.es = es
 	o.debug = debug
 	o.exe = dir
 	o.index = index
@@ -101,12 +103,17 @@ func (o *Option) GetEnv() string {
 	return o.env
 }
 
+// GetEs return the es serv
+func (o *Option) GetEs() string {
+	return o.es
+}
+
 // GetIndex return if indexation is needed default false
 func (o *Option) GetIndex() bool {
 	return o.index
 }
 
-// GetReIndex return if reindexation is needed default false
+// GetReindex return if reindexation is needed default false
 func (o *Option) GetReindex() bool {
 	return o.reindex
 }
