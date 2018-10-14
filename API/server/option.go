@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Sunday, 30th September 2018 5:46:47 pm
+ * Last Modified: Sunday, 14th October 2018 8:54:09 pm
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -14,17 +14,20 @@
 package server
 
 type Option struct {
-	exe      string
-	env      string
-	es       string
-	debug    bool
-	logpath  string
-	datapath string
-	address  string
-	port     string
-	ip       string
-	index    bool
-	reindex  bool
+	exe       string
+	env       string
+	es        string
+	debug     bool
+	logpath   string
+	dbType    string
+	datapath  string
+	address   string
+	port      string
+	ip        string
+	mongoIP   string
+	mongoPort string
+	index     bool
+	reindex   bool
 }
 
 var (
@@ -33,11 +36,11 @@ var (
 	TEST = "test"
 )
 
-// Hydrate set datas for Option struc
-func (o *Option) Hydrate(port, ip, env, es, dir, logpath, datapath string, debug bool, index bool, reindex bool) {
+func (o *Option) Hydrate(port, ip, env, es, dir, logpath, dbType, datapath, mongoIP, mongoPort string, index, reindex, debug bool) {
 	o.port = port
 	o.ip = ip
 	o.datapath = datapath
+	o.dbType = dbType
 	o.logpath = logpath
 	o.env = env
 	o.es = es
@@ -45,6 +48,8 @@ func (o *Option) Hydrate(port, ip, env, es, dir, logpath, datapath string, debug
 	o.exe = dir
 	o.index = index
 	o.reindex = reindex
+	o.mongoIP = mongoIP
+	o.mongoPort = mongoPort
 }
 
 // GetAddress concat ip and port and affect to address if needed
@@ -90,6 +95,10 @@ func (o *Option) GetLogpath() string {
 	return o.logpath
 }
 
+func (o *Option) GetDatabaseType() string {
+	return o.dbType
+}
+
 // GetDatapath return the path to data folder
 func (o *Option) GetDatapath() string {
 	return o.datapath
@@ -118,6 +127,22 @@ func (o *Option) GetReindex() bool {
 	return o.reindex
 }
 
+func (o *Option) GetMongoIP() string {
+	return o.mongoIP
+}
+
+func (o *Option) GetMongoPort() string {
+	return o.mongoPort
+}
+
+func (o *Option) SetMongoPort(port string) {
+	o.mongoPort = port
+}
+
+func (o *Option) SetDatabaseType(dbType string) {
+	o.dbType = dbType
+}
+
 // SetEnv allow a IServerOption to change the environnement
 // "prod" => "production"
 // "test" => "test"
@@ -140,4 +165,8 @@ func (o *Option) SetLogpath(logpath string) {
 // SetDatapath allow IServerOption to change the path to data
 func (o *Option) SetDatapath(datapath string) {
 	o.datapath = datapath
+}
+
+func (o *Option) SetMongoIP(ip string) {
+	o.mongoIP = ip
 }
