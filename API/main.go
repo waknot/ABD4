@@ -5,11 +5,15 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Sunday, 14th October 2018 9:53:33 pm
+<<<<<<< 49c39e848c51bf035cfe2bc69205781907917321
+ * Last Modified: Sunday, 14th October 2018 10:01:33 pm
+=======
+ * Last Modified: Sunday, 14th October 2018 10:01:33 pm
+>>>>>>> feat(main/main_test): new database wrokflow
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
- */
+*/
 
 package main
 
