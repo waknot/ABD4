@@ -29,8 +29,45 @@ cd ABD4/API
 go get github.com/gorilla/mux
 go get github.com/dgrijalva/jwt-go
 go get github.com/stretchr/testify/assert
+// to use with BoltDb embedded key/value database
 go get github.com/boltdb/bolt/...
+go get gopkg.in/olivere/elastic.v5
+// to use with MongoDB higly scalable document oriented database on distant server
+go get gopkg.in/mgo.v2
 go build ABD4/API
+```
+
+## Running du docker contenant elasticsearch 5.5.3
+```
+    cd docker-es
+    - if not exists, create dir `data` and `data2`
+    - launch the docker:
+        docker-compose up
+    - kill the docker:
+        docker-compose down [--remove-orphans, kill all instances if changes has been done in docker-compose.yml]
+```
+
+Warning: if you want to run a `local` docker set or `unset the sniffing option` of elastic library.
+```
+docker-compose.yml ->
+    services:
+        my_service:
+            environment:
+                http.publish_host=127.0.0.1
+                ...
+            ...
+        ...
+    ...
+```
+
+## Commandes Es pour voir les infos
+```
+    - voir les différents nodes (normalement 2):
+        curl http://127.0.0.1:9200/_nodes/http?pretty=1
+    - voir le cluster:
+        curl http://127.0.0.1:9200/
+    - voir le cluster health:
+        curl http://127.0.0.1:9200/_cluster/health
 ```
 
 ## Running the tests
@@ -112,6 +149,8 @@ On a live system, the recommended way to deploy this API in a docker context. to
 * [Golang](https://golang.org/) - The base language
 * [gorilla/mux](https://github.com/gorilla/mux) - Rest Routing packages
 * [dgrijalva/jwt-go](https://github.com/dgrijalva/jwt-go) - Json Web Token packages
+* [olivere/elastic.v5](https://godoc.org/gopkg.in/olivere/elastic.v5) - Package elastic provides an interface to the Elasticsearch server
+* [gopkg.in/mgo.v2](https://godoc.org/gopkg.in/mgo.v2) - Package mgo offers a rich MongoDB driver for Go
 * [boltdb/bolt](https://github.com/boltdb/bolt) - NoSql embedded database packages
 * [stretchr/testify/assert](https://github.com/stretchr/testify) - testing assertion base on golang testing tools
 

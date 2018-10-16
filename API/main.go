@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Sunday, 30th September 2018 5:44:39 pm
+ * Last Modified: Tuesday, 16th October 2018 4:04:07 pm
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -33,19 +33,27 @@ func launchApp(opts *server.Option) {
 }
 
 func main() {
-	var ip = flag.String("ip", "0.0.0.0", "define ip address")
+	var ip = flag.String("ip", "127.0.0.1", "define ip address")
 	var env = flag.String("env", "dev", "define environnement context, [prod|dev|test]")
+	var es = flag.String("es", "127.0.0.1", "define the es server")
 	var port = flag.Int("p", 8000, "define port")
 	var debug = flag.Bool("d", false, "active debug logging")
+	var embedES = flag.Bool("elastic", true, "Active elastic search")
+	var index = flag.Bool("index", false, "indexation for ES")
+	var reindex = flag.Bool("reindex", false, "indexation with mapping reloading")
 	var logpath = flag.String("logpath", "", "define log folder path from exe folder")
-	var datapath = flag.String("datapath", "", "define data folder path from exe folder")
+	var databasetype = flag.String("db", "mongo", "define the database to use: mongo or bolt")
+	var datapath = flag.String("datapath", "", "define data folder path from exe folder, for bolt db")
+	var mongoIP = flag.String("mip", "127.0.0.1", "define the mongo server ip")
+	var mongoPort = flag.Int("mp", 27017, "define the mongo server ip")
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	flag.Parse()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	portStr := strconv.Itoa(*port)
+	mongoPortStr := strconv.Itoa(*mongoPort)
 	opts := &server.Option{}
-	opts.Hydrate(portStr, *ip, *env, dir, *logpath, *datapath, *debug)
+	opts.Hydrate(portStr, *ip, *env, *es, dir, *logpath, *databasetype, *datapath, *mongoIP, mongoPortStr, *embedES, *index, *reindex, *debug)
 	launchApp(opts)
 }
