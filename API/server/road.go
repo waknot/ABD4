@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Sunday, 30th September 2018 9:46:55 pm
+ * Last Modified: Monday, 15th October 2018 9:58:35 pm
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -56,10 +56,11 @@ func (r *Road) appendTo(ctx *context.AppContext, preparedHandler *context.Handle
 func GetRoadKit() map[string]RoadGetter {
 	return map[string]RoadGetter{
 		// exemple for localhost:8000/user/* set of road:
-		"/user":    getUserRouting,
-		"/auth":    getAuthRouting,
-		"/backup":  getBackupRouting,
-		"/elastic": getElasticRouting,
+		"/user":        getUserRouting,
+		"/auth":        getAuthRouting,
+		"/backup":      getBackupRouting,
+		"/elastic":     getElasticRouting,
+		"/transaction": getTransactionRouting,
 	}
 }
 
@@ -107,6 +108,20 @@ func getAuthRouting() []*Road {
 	return []*Road{
 		{
 			Name:            "/auth/login",
+			Method:          OPTIONS,
+			Pattern:         "/login",
+			StatusProtected: false,
+			HandlerFunc:     handler.Option,
+		},
+		{
+			Name:            "/auth/register",
+			Method:          OPTIONS,
+			Pattern:         "/register",
+			StatusProtected: false,
+			HandlerFunc:     handler.Option,
+		},
+		{
+			Name:            "/auth/login",
 			Method:          POST,
 			Pattern:         "/login",
 			StatusProtected: false,
@@ -142,6 +157,32 @@ func getElasticRouting() []*Road {
 			Pattern:         "/",
 			StatusProtected: false,
 			HandlerFunc:     handler.GetElasticHealth,
+		},
+	}
+}
+
+func getTransactionRouting() []*Road {
+	return []*Road{
+		{
+			Name:            "/transaction",
+			Method:          OPTIONS,
+			Pattern:         "/",
+			StatusProtected: false,
+			HandlerFunc:     handler.Option,
+		},
+		{
+			Name:            "/transaction",
+			Method:          POST,
+			Pattern:         "/",
+			StatusProtected: false,
+			HandlerFunc:     handler.AddTransaction,
+		},
+		{
+			Name:            "/transaction",
+			Method:          GET,
+			Pattern:         "/",
+			StatusProtected: false,
+			HandlerFunc:     handler.GetTransaction,
 		},
 	}
 }

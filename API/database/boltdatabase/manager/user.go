@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Saturday, 13th October 2018 12:14:53 am
+ * Last Modified: Tuesday, 16th October 2018 5:09:56 pm
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -403,12 +403,11 @@ func getDummyUsers(n int) []*model.User {
 }
 
 func (um UserManager) FakePersist(n int) error {
-	var err error
 	users := getDummyUsers(n)
 	for _, user := range users {
-		user, err = um.Create(user)
+		_, err := um.Create(user)
 		if err != nil {
-			fmt.Errorf("%s %s", utils.Use().GetStack(um.FakePersist), "method not implemented")
+			return fmt.Errorf("%s %s", utils.Use().GetStack(um.FakePersist), err.Error())
 		}
 	}
 	return nil
