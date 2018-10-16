@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Sunday, 30th September 2018 8:19:21 pm
+ * Last Modified: Tuesday, 16th October 2018 12:19:20 am
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -19,20 +19,45 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 // Acheteur is composed:
 type Transaction struct {
-	Acheteur		Acheteur			`json:"Acheteur"`
-	Game			Game				`json:"Game"`
-	Reservation		[]Reservation		`json:"Reservation"`
+	ObjectID    bson.ObjectId `bson:"_id,omitempty"`
+	ID          string        `json:"id"`
+	Acheteur    Acheteur      `json:"Acheteur"`
+	Game        Game          `json:"Game"`
+	Reservation []Reservation `json:"Reservation"`
+	createdAt   time.Time
+	updatedAt   time.Time
 }
+
+var TRANSACTION = "transaction"
 
 // ToString return string conversion of marshal user
 // absorb error...
 func (t *Transaction) ToString() string {
 	ret, _ := t.Marshal()
 	return string(ret)
+}
+
+func (t *Transaction) SetCreatedAt(now time.Time) {
+	t.createdAt = now
+}
+
+func (t *Transaction) SetUpdatedAt(now time.Time) {
+	t.updatedAt = now
+}
+
+func (t Transaction) GetCreatedAt() time.Time {
+	return t.createdAt
+}
+
+func (t Transaction) GetUpdatedAt() time.Time {
+	return t.updatedAt
 }
 
 // UnmarshalFromRequest take a request object supposed to contain
@@ -51,6 +76,6 @@ func (t *Transaction) UnmarshalFromRequest(r *http.Request) error {
 }
 
 // Marshal implement ISerial
-func (t *Transaction) Marshal() ([]byte, error) {
+func (t Transaction) Marshal() ([]byte, error) {
 	return json.Marshal(t)
 }
