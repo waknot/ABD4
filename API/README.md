@@ -149,6 +149,8 @@ On a live system, the recommended way to deploy this API in a docker context. to
 * [Golang](https://golang.org/) - The base language
 * [gorilla/mux](https://github.com/gorilla/mux) - Rest Routing packages
 * [dgrijalva/jwt-go](https://github.com/dgrijalva/jwt-go) - Json Web Token packages
+* [olivere/elastic.v5](https://godoc.org/gopkg.in/olivere/elastic.v5) - Package elastic provides an interface to the Elasticsearch server
+* [gopkg.in/mgo.v2](https://godoc.org/gopkg.in/mgo.v2) - Package mgo offers a rich MongoDB driver for Go
 * [boltdb/bolt](https://github.com/boltdb/bolt) - NoSql embedded database packages
 * [stretchr/testify/assert](https://github.com/stretchr/testify) - testing assertion base on golang testing tools
 

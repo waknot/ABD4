@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Sunday, 14th October 2018 10:00:39 pm
+ * Last Modified: Tuesday, 16th October 2018 4:05:30 pm
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -16,6 +16,7 @@ package server
 type Option struct {
 	exe       string
 	env       string
+	embedES   bool
 	es        string
 	debug     bool
 	logpath   string
@@ -36,13 +37,14 @@ var (
 	TEST = "test"
 )
 
-func (o *Option) Hydrate(port, ip, env, es, dir, logpath, dbType, datapath, mongoIP, mongoPort string, index, reindex, debug bool) {
+func (o *Option) Hydrate(port, ip, env, es, dir, logpath, dbType, datapath, mongoIP, mongoPort string, embedES, index, reindex, debug bool) {
 	o.port = port
 	o.ip = ip
 	o.datapath = datapath
 	o.dbType = dbType
 	o.logpath = logpath
 	o.env = env
+	o.embedES = embedES
 	o.es = es
 	o.debug = debug
 	o.exe = dir
@@ -110,6 +112,12 @@ func (o *Option) GetEnv() string {
 		return DEV
 	}
 	return o.env
+}
+
+// GetEmbedES return the boolean indicating if
+// user want the API to connect to elastic search
+func (o *Option) GetEmbedES() bool {
+	return o.embedES
 }
 
 // GetEs return the es serv

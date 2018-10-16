@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Sunday, 14th October 2018 1:12:19 pm
+ * Last Modified: Tuesday, 16th October 2018 12:52:58 am
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -14,14 +14,13 @@
 package context
 
 import (
+	"ABD4/API/elasticsearch"
 	"ABD4/API/logger"
 	"ABD4/API/utils"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
-
-	elastic "gopkg.in/olivere/elastic.v5"
 )
 
 var (
@@ -88,25 +87,27 @@ func (ctx *AppContext) Instanciate(opts IServerOption) *AppContext {
 	ctx.DataPath = opts.GetDatapath()
 
 	//Define elastic serv and index if needed
-	esServ := opts.GetEs()
-	ctx.ElasticClient, err = elasticsearch.Instanciate(esServ)
-	if err != nil {
-		loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
-	}
-
-	// When Es client is up, check if we need to reindex
-	if opts.GetIndex() && false == opts.GetReindex() {
-		err = elasticsearch.IndexAll(ctx.ElasticClient, false)
+	embedElastic := opts.GetEmbedES()
+	if embedElastic {
+		esServ := opts.GetEs()
+		ctx.ElasticClient, err = elasticsearch.Instanciate(esServ)
 		if err != nil {
 			loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
 		}
-	} else if opts.GetReindex() {
-		err = elasticsearch.IndexAll(ctx.ElasticClient, true)
-		if err != nil {
-			loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
+
+		// When Es client is up, check if we need to reindex
+		if opts.GetIndex() && false == opts.GetReindex() {
+			err = elasticsearch.IndexAll(ctx.ElasticClient, false)
+			if err != nil {
+				loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
+			}
+		} else if opts.GetReindex() {
+			err = elasticsearch.IndexAll(ctx.ElasticClient, true)
+			if err != nil {
+				loggers.Error.Fatalf("%s %s", utils.Use().GetStack(ctx.Instanciate), err.Error())
+			}
 		}
 	}
-
 	ctx.Log.Info.Printf("%s RootDir: %s", utils.Use().GetStack(ctx.Instanciate), ctx.Exe)
 	ctx.Log.Info.Printf("%s LogPath: %s", utils.Use().GetStack(ctx.Instanciate), ctx.Logpath)
 	ctx.Log.Info.Printf("%s Database asked: %s", utils.Use().GetStack(ctx.Instanciate), ctx.Opts.GetDatabaseType())

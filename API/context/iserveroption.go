@@ -5,7 +5,7 @@
  * Author: billaud_j castel_a masera_m
  * Contact: (billaud_j@etna-alternance.net castel_a@etna-alternance.net masera_m@etna-alternance.net)
  * -----
- * Last Modified: Saturday, 13th October 2018 7:19:29 pm
+ * Last Modified: Tuesday, 16th October 2018 12:30:24 am
  * Modified By: Aurélien Castellarnau
  * -----
  * Copyright © 2018 - 2018 billaud_j castel_a masera_m, ETNA - VDM EscapeGame API
@@ -31,6 +31,10 @@ type IServerOption interface {
 	SetMongoPort(port string)
 	GetExeFolder() string
 	GetEnv() string
+	GetEmbedES() bool
+	GetEs() string
+	GetIndex() bool
+	GetReindex() bool
 	GetLogpath() string
 	GetDatabaseType() string
 	GetDatapath() string
