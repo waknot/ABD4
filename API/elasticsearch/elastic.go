@@ -5,6 +5,9 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"log"
+	"os"
+	"path/filepath"
 
 	elastic "gopkg.in/olivere/elastic.v5"
 )
@@ -22,23 +25,27 @@ func Instanciate(serv string) (*elastic.Client, error) {
 
 //IndexAll launch indexation or re-indexation
 func IndexAll(es *elastic.Client, reindex bool) error {
-	files, err := ioutil.ReadDir("ABD4/API/elasticsearch/esmapping/")
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		return err
+		log.Fatal(err)
+	}
+	mappingDir := filepath.Join(dir, "API/elasticsearch/esmapping/")
+	fmt.Printf("%s mapping dir: %s", utils.Use().GetStack(IndexAll), mappingDir)
+	files, err := ioutil.ReadDir(mappingDir)
+	if err != nil {
+		return fmt.Errorf("%s %s", utils.Use().GetStack(Instanciate), err.Error())
 	}
 
 	if reindex {
 		for _, file := range files {
-			ReIndex(es, utils.NoFileExtension(file.Name()))
+			err = ReIndex(es, utils.NoFileExtension(file.Name()))
 		}
 	} else {
 		for _, file := range files {
-			Index(es, utils.NoFileExtension(file.Name()))
+			err = Index(es, utils.NoFileExtension(file.Name()))
 		}
 	}
-
-	return nil
-
+	return err
 }
 
 // Index all the entities mapped in elasticsearch/esmapping/
@@ -91,7 +98,13 @@ func ReIndex(es *elastic.Client, index string) error {
 //creatIndex create ES index
 func createIndex(es *elastic.Client, index string) error {
 
-	mapping, err := ioutil.ReadFile("ABD4/API/elasticsearch/esmapping/" + index + ".json")
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+	mappingDir := filepath.Join(dir, "API/elasticsearch/esmapping/")
+	fmt.Printf("%s mapping dir: %s", utils.Use().GetStack(IndexAll), mappingDir)
+	mapping, err := ioutil.ReadFile(filepath.Join(mappingDir, index+".json"))
 	if err != nil {
 		return err
 	}
