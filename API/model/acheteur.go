@@ -23,7 +23,10 @@ import (
 
 // Acheteur is composed:
 type Acheteur struct {
-	Spectateur
+	Civilite    string    	`json:"Civilite"`
+	Nom       	string    	`json:"Nom"`
+	Prenom      string    	`json:"Prenom"`
+	Age   		int			`json:"Age, float64"`
 	Email 		string    	`json:"Email"`
 }
 

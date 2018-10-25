@@ -196,7 +196,11 @@ func getDummyTransactions(n int) []model.Transaction {
 		}
 
 		acheteur := model.Acheteur{
-			Spectateur: reservation[0].Spectateur,
+			Civilite: "Monsieur",
+			Nom:      "Carmine",
+			Prenom:   "Art",
+			Age:      64 + it,
+			Email:	  "dummyMail@test.com",
 		}
 
 		transaction := model.Transaction{
